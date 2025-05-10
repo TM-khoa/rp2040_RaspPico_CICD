@@ -25,16 +25,16 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Docker image
-      uses: docker build -t pico-builder-image .
+      run: docker build -t pico-builder-image .
 
     - name: Create docker container
-      uses: docker create --name pico-builder-container pico-builder-image
+      run: docker create --name pico-builder-container pico-builder-image
 
     - name: Copy out .uf2 file
-      uses: docker cp pico-builder-container:/project/src/build/${APP_NAME}.uf2 ./${APP_NAME}.uf2
+      run: docker cp pico-builder-container:/project/src/build/${APP_NAME}.uf2 ./${APP_NAME}.uf2
 
     - name: Put environment variable into the env context
-      uses: echo "app_name=$APP_NAME" >> $GITHUB_ENV
+      run: echo "app_name=$APP_NAME" >> $GITHUB_ENV
 
     - name: Push to release
       uses: softprops/action-gh-release@v2
